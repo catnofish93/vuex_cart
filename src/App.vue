@@ -1,11 +1,32 @@
 <template>
-  <div id="app">
-    Clicked:{{$store.state.count}}times,count is {{count}}
-    <button @click="increment">+</button>
-    <button @click="decrement">-</button>
-    <button @click="incrementIfOdd">Increment if odd</button>
-    <button @click="incrementAsync">Increment async</button>
-    <div>历史记录{{recentHistory}}</div>
+  <div>
+    <div>Shopping Cart Example</div>
+    <div>
+      <div>Products</div>
+      <ul>
+        <li>
+          <div>ipad4 Mini-$500.01</div>
+          <button>Add to cart</button>
+        </li>
+        <li>
+          <div>H&M T-shirt White-$10.99</div>
+          <button>Add to cart</button>
+        </li>
+        <li>
+          <div>Charli XCX-Sucker CD-$19.99</div>
+          <button>Add to cart</button>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <div>Your Cart</div>
+      <ul>
+        <li><span>ipad 4 Mini-$500.01×</span>2</li>
+        <li><span>H&M T-Shirt White-$10.99×</span>5</li>
+      </ul>
+      <div>Total:$1,054.97</div>
+      <button>checkout</button>
+    </div>
   </div>
 </template>
 <script>
