@@ -1,49 +1,63 @@
 <template>
   <div>
-    <div>Shopping Cart Example</div>
+    <div style="color:#999999;font-size:30px;border: 1px solid #e8e8e8;border-bottom:none;width:350px">Shopping Cart Example</div>
     <div>
-      <div>Products</div>
+      <a-card title="Products">
       <ul>
-        <li>
-          <div>ipad4 Mini-$500.01</div>
-          <button>Add to cart</button>
-        </li>
-        <li>
-          <div>H&M T-shirt White-$10.99</div>
-          <button>Add to cart</button>
-        </li>
-        <li>
-          <div>Charli XCX-Sucker CD-$19.99</div>
-          <button>Add to cart</button>
+        <li v-for="product in products"
+          :key="product.id">
+          <div>{{product.name}}-{{product.price|currency}}</div>
+          <a-button :disabled="product.inventory===0" @click="addProductToCart(product)">Add to cart</a-button>
         </li>
       </ul>
+    </a-card>
     </div>
     <div>
-      <div>Your Cart</div>
+      <a-card title="Your Cart">
       <ul>
-        <li><span>ipad 4 Mini-$500.01×</span>2</li>
-        <li><span>H&M T-Shirt White-$10.99×</span>5</li>
+        <li v-for="item in products1" :key="item.id"><span>{{item.name}}×</span>{{item.quantity}}</li>
       </ul>
-      <div>Total:$1,054.97</div>
-      <button>checkout</button>
+      <div>Total：{{total|currency}}</div>
+      <a-button @click="checkout(products1)">checkout</a-button>
+      </a-card>
+      <div v-show="checkstatus">{{checkstatus}}</div>
     </div>
   </div>
 </template>
 <script>
-import {mapGetters,mapActions} from "vuex"
+import {mapState,mapGetters,mapActions} from "vuex"
 export default {
-    computed:mapGetters([
-      'count',
-      "recentHistory"
-    ]),
-    methods:mapActions([
-      'increment',
-      'decrement',
-      'incrementIfOdd',
-      'incrementAsync'
-    ])
+    computed:{
+      ...mapState({
+        products:state=>{
+          return state.products.goods
+        },
+        checkstatus:state=>{
+          console.log(state)
+          return state.cart.checkoutStatus
+        }
+      }),
+      ...mapGetters("cart",{
+        products1:"cartProducts",
+        total:"cartTotalPrice"
+      })
+    },
+    methods:{
+      ...mapActions('cart',[
+        'addProductToCart',
+        "checkout"
+      ]),
+    },
+    created(){
+      this.$store.dispatch('products/getAllProducts')
+    }
 }
 </script>
 <style lang="scss">
-
+  ul{
+    list-style: none
+  }
+  .ant-card{
+    width: 350px
+  }
 </style>
